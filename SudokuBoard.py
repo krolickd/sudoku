@@ -54,6 +54,8 @@ class SudokuBoard:
     def solve(self):
         improvement = 1
         trip = 1
+
+        #square based evaluation
         while improvement > 0:
             improvement = 0
 
@@ -76,6 +78,7 @@ class SudokuBoard:
             trip += 1
                     
         #NO IMPROVEMENT
+        #relation based evaluation
         #implement backtracking for puzzles where there are squares with more than one possible value
 
 
