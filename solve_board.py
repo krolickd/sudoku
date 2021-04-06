@@ -164,13 +164,17 @@ def main():
     ]
 
     sb = SudokuBoard()
-    sb.load_board(BOARD_13)
+    sb.load_board(BOARD_4)
     sb.print_board()
-    print("Empty: {}".format(sb.remaining_spaces()))
+    print("Empty at start: {}".format(sb.remaining_spaces()))
     sb.solve()
     sb.print_board()
-    print("Empty: {}".format(sb.remaining_spaces()))
-
+    if sb.remaining_spaces() > 0:
+        print("Empty at end: {}".format(sb.remaining_spaces()))
+    elif sb.is_board_valid():
+        print("Complete and Valid")
+    else:
+        print("Complete but Invalid")
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,4 @@
+import numpy
 class SudokuBoard:
     def __init__(self):
         #known values
@@ -167,6 +168,34 @@ class SudokuBoard:
 
         # relation based evaluation
         # implement backtracking for puzzles where there are squares with more than one possible value
+
+    def is_board_valid(self):
+        all_vals = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+        #rows
+        for row in self.board:
+            if all_vals != set(row):
+                return False
+
+        # columns
+        for col in range(9):
+            if all_vals != set([row[col] for row in self.board]):
+                return False
+        grid = numpy.array(self.board)
+        
+        #quadrants
+        for y in range(0,9,3):
+            for x in range(0,9,3):
+                quad_vals = set()
+                quad = grid[y:y+3,x:x+3]
+
+                for x in quad:
+                    quad_vals.update(x)
+                
+                if all_vals != quad_vals:
+                    return False
+
+        return True
 
 
     def print_board(self):
