@@ -1,6 +1,7 @@
 import numpy
 import copy
 
+
 class SudokuBoard:
     def __init__(self):
 
@@ -115,7 +116,9 @@ class SudokuBoard:
             if val in self.options[rel_key]:
                 break
         else:
-            if self.debug: print(f"{val} from {target_key} not in row {self.get_row_relatives(target_key)}")
+            if self.debug:
+                print(
+                    f"{val} from {target_key} not in row {self.get_row_relatives(target_key)}")
             return True
 
         # check col
@@ -123,7 +126,9 @@ class SudokuBoard:
             if val in self.options[rel_key]:
                 break
         else:
-            if self.debug: print(f"{val} from {target_key} not in col {self.get_col_relatives(target_key)}")
+            if self.debug:
+                print(
+                    f"{val} from {target_key} not in col {self.get_col_relatives(target_key)}")
             return True
 
         # check quadrant
@@ -131,7 +136,9 @@ class SudokuBoard:
             if val in self.options[rel_key]:
                 break
         else:
-            if self.debug: print(f"{val} from {target_key} not in quad {self.get_quad_relatives(target_key)}")
+            if self.debug:
+                print(
+                    f"{val} from {target_key} not in quad {self.get_quad_relatives(target_key)}")
             return True
 
         return False
@@ -145,7 +152,8 @@ class SudokuBoard:
         while improvement > 0 or back_track:
             improvement = 0
             back_track = False
-            if self.debug: print(f'\nTrip {trip}')
+            if self.debug:
+                print(f'\nTrip {trip}')
 
             # traverse populated board
             for y in range(9):
@@ -155,7 +163,8 @@ class SudokuBoard:
                     # find possible values for empty space
                     if val == 0:
                         possibilities = self.get_unused_vals(y, x)
-                        if self.debug: print(f"{y},{x}: {possibilities}")
+                        if self.debug:
+                            print(f"{y},{x}: {possibilities}")
 
                         # update board if only one possible value
                         if len(possibilities) == 1:
@@ -168,53 +177,60 @@ class SudokuBoard:
                             self.options[str(y)+str(x)] = possibilities
                         else:
                             # No possibilities, invalid solution, backtrack
-                            if self.debug: print("backtracking...")
+                            if self.debug:
+                                print("backtracking...")
                             self.board = copy.deepcopy(self.backup_board)
                             self.options = copy.deepcopy(self.backup_guesses)
-                            
+
                             back_track = True
-                            if self.debug: self.print_board()
-                            if self.debug: print(self.options)
+                            if self.debug:
+                                self.print_board()
+                            if self.debug:
+                                print(self.options)
                             break
                 else:
                     continue
                 break
-            
 
-            if self.debug: print(f"Analyze Options... Improvement: {improvement}, Backtrack: {back_track}")
+            if self.debug:
+                print(
+                    f"Analyze Options... Improvement: {improvement}, Backtrack: {back_track}")
             # evaluate possibilities once populated
             if improvement == 0 or back_track:
                 # check for unique values in unpopulated relatives
                 pop_list = []
-                for key,vals in self.options.items():
+                for key, vals in self.options.items():
                     for val in vals:
-                        if self.debug: print(f"{val} at {key} from {vals} isUnique:{self.is_unique_in_relatives(val, key)} isSingle:{len(vals) == 1}")
+                        if self.debug:
+                            print(
+                                f"{val} at {key} from {vals} isUnique:{self.is_unique_in_relatives(val, key)} isSingle:{len(vals) == 1}")
                         if self.is_unique_in_relatives(val, key) or len(vals) == 1:
                             self.board[int(key[0])][int(key[1])] = int(val)
-                            if self.debug: print(f"updating {val} at {key} from {vals}")
+                            if self.debug:
+                                print(f"updating {val} at {key} from {vals}")
                             pop_list.append(key)
                             improvement += 1
                             break
                 [self.options.pop(k) for k in pop_list]
 
             if improvement == 0 and len(self.options) > 0 and not back_track:
-                #Guess possible solutions
+                # Guess possible solutions
 
                 # backup board and options
                 self.backup_board = copy.deepcopy(self.board)
                 self.backup_guesses = copy.deepcopy(self.options)
-                
-                #select guess and add to board
+
+                # select guess and add to board
                 key, vals = self.options.popitem()
-                if self.debug: print(f"guessing {val} at {key} from {vals}")
+                if self.debug:
+                    print(f"guessing {val} at {key} from {vals}")
                 val = vals.pop()
                 self.board[int(key[0])][int(key[1])] = int(val)
-                
+
                 # add unguessed vals to backup options
                 self.backup_guesses[key] = vals
                 improvement += 1
             trip += 1
-
 
     def is_board_valid(self):
         all_vals = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -222,13 +238,15 @@ class SudokuBoard:
         # rows
         for row in self.board:
             if all_vals != set(row):
-                if self.debug: print(f"invalid row: {row}")
+                if self.debug:
+                    print(f"invalid row: {row}")
                 return False
 
         # columns
         for col in range(9):
             if all_vals != set([row[col] for row in self.board]):
-                if self.debug: print(f"invalid col: {col}")
+                if self.debug:
+                    print(f"invalid col: {col}")
                 return False
 
         # quadrants
@@ -242,7 +260,8 @@ class SudokuBoard:
                     quad_vals.update(x)
 
                 if all_vals != quad_vals:
-                    if self.debug: print(f"invalid quadrant: {y},{x}")
+                    if self.debug:
+                        print(f"invalid quadrant: {y},{x}")
                     return False
 
         return True

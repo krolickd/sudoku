@@ -177,7 +177,7 @@ def main():
         [0, 0, 6, 0, 0, 3, 0, 0, 5],
         [5, 0, 4, 0, 0, 0, 0, 0, 1]
     ])
-    
+
     # HARDEST
     boards.append([
         [8, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -191,9 +191,10 @@ def main():
         [0, 9, 0, 0, 0, 0, 4, 0, 0]
     ])
 
-    #LAST BOARD NOT YET SOLVED
+    # LAST BOARD NOT YET SOLVED
     test_single_board(boards[0])
-    #test_all_boards(boards)
+    # test_all_boards(boards)
+
 
 def test_single_board(board):
     sb = SudokuBoard()
@@ -204,16 +205,17 @@ def test_single_board(board):
     sb.solve()
     sb.print_board()
     print(f"End: {sb.remaining_spaces()}, Valid: {sb.is_board_valid()}")
-    
+
 
 def test_all_boards(boards):
-    for num,board in enumerate(boards):
+    for num, board in enumerate(boards):
         sb = SudokuBoard()
         sb.load_board(board)
         print(f"Board: {num}, Start: {sb.remaining_spaces()}", end="")
         sb.solve()
-        #sb.print_board()
+        # sb.print_board()
         print(f" End: {sb.remaining_spaces()}, Valid: {sb.is_board_valid()}")
+
 
 if __name__ == '__main__':
     main()
